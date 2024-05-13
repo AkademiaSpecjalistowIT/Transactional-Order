@@ -2,8 +2,11 @@ package pl.akademiaspecjalistowit.transactionalorder.product;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +38,7 @@ class ProductServiceTest {
         //when
         productService.addProduct(exampleProduct);
 
-        //when
+        //then
         List<ProductEntity> all = productRepository.findAll();
         assertThat(all).hasSize(1);
         ProductEntity productEntity = all.get(0);
@@ -55,4 +58,26 @@ class ProductServiceTest {
         //when
         assertThat(products).containsExactlyInAnyOrder(exampleProduct);
     }
+
+    @Test
+    public void should_remove_bought_out_products() {
+        // given
+        ProductEntity productEntity = prepareProductEntity();
+        productRepository.save(productEntity);
+
+        // when
+        productRepository.removeBoughtOutProducts("Test Product 1");
+
+        //then
+        Optional<ProductEntity> result = productRepository.getProductEntityByName("Test Product 1");
+        assertTrue(result.isEmpty());
+    }
+
+    private ProductEntity prepareProductEntity(){
+        ProductEntity product1 = new ProductEntity();
+        product1.setName("Test Product 1");
+        product1.setQuantity(0);
+        return product1;
+    }
+
 }

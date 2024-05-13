@@ -9,10 +9,12 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.akademiaspecjalistowit.transactionalorder.order.OrderEntity;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity {
 
