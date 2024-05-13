@@ -1,4 +1,4 @@
-package pl.akademiaspecjalistowit.transactionalorder.order;
+package pl.akademiaspecjalistowit.transactionalorder.order.exception;
 
 public class OrderServiceException extends RuntimeException {
     public OrderServiceException(String message) {

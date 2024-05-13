@@ -1,4 +1,4 @@
-package pl.akademiaspecjalistowit.transactionalorder.product;
+package pl.akademiaspecjalistowit.transactionalorder.product.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

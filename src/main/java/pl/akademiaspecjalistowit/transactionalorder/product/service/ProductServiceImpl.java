@@ -1,12 +1,15 @@
-package pl.akademiaspecjalistowit.transactionalorder.product;
+package pl.akademiaspecjalistowit.transactionalorder.product.service;
 
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.akademiaspecjalistowit.transactionalorder.order.OrderEntity;
-import pl.akademiaspecjalistowit.transactionalorder.order.OrderPlacedEventListener;
+import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.order.service.events.OrderPlacedEventListener;
+import pl.akademiaspecjalistowit.transactionalorder.product.dto.ProductDto;
+import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
+import pl.akademiaspecjalistowit.transactionalorder.product.repository.ProductRepository;
 
 @AllArgsConstructor
 @Service

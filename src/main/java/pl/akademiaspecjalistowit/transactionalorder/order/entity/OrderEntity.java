@@ -1,4 +1,4 @@
-package pl.akademiaspecjalistowit.transactionalorder.order;
+package pl.akademiaspecjalistowit.transactionalorder.order.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

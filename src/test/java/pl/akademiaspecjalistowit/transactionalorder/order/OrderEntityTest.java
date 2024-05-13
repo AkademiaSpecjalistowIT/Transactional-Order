@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderException;
 
 class OrderEntityTest {
 

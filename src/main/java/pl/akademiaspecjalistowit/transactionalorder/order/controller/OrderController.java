@@ -1,30 +1,25 @@
-package pl.akademiaspecjalistowit.transactionalorder.product;
+package pl.akademiaspecjalistowit.transactionalorder.order.controller;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import pl.akademiaspecjalistowit.transactionalorder.order.dto.OrderDto;
+import pl.akademiaspecjalistowit.transactionalorder.order.service.OrderService;
 
 @RestController
-@RequestMapping("/products")
 @AllArgsConstructor
-public class ProductController {
+@RequestMapping("/orders")
+public class OrderController {
 
-    private final ProductService productService;
+    private final OrderService orderService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addProduct(@RequestBody ProductDto productDto){
-        productService.addProduct(productDto);
-    }
-
-    @GetMapping
-    public List<ProductDto> getProducts(){
-        return productService.getProducts();
+    public void placeAnOrder(@RequestBody OrderDto orderDto) {
+        orderService.placeAnOrder(orderDto);
     }
 }

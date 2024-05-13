@@ -8,6 +8,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.akademiaspecjalistowit.transactionalorder.product.dto.ProductDto;
+import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
+import pl.akademiaspecjalistowit.transactionalorder.product.repository.ProductRepository;
+import pl.akademiaspecjalistowit.transactionalorder.product.service.ProductService;
 
 @SpringBootTest
 class ProductServiceTest {

@@ -1,4 +1,4 @@
-package pl.akademiaspecjalistowit.transactionalorder.product;
+package pl.akademiaspecjalistowit.transactionalorder.product.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +9,8 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.akademiaspecjalistowit.transactionalorder.order.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.product.exception.ProductException;
 
 @Entity
 @Getter
@@ -30,6 +31,11 @@ public class ProductEntity {
         this.quantity = quantity;
     }
 
+    public void applyOrder(OrderEntity orderEntity){
+        checkAvailabilityForOrder(orderEntity);
+        this.quantity -= orderEntity.getQuantity();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -47,11 +53,6 @@ public class ProductEntity {
         return Objects.hash(name, quantity);
     }
 
-
-    public void applyOrder(OrderEntity orderEntity){
-        checkAvailabilityForOrder(orderEntity);
-        this.quantity -= orderEntity.getQuantity();
-    }
 
     private void checkAvailabilityForOrder(OrderEntity orderEntity) {
         if (this.quantity.compareTo(orderEntity.getQuantity()) < 0) {

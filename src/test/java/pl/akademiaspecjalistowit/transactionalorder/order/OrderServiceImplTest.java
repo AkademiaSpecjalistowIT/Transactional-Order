@@ -9,9 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.akademiaspecjalistowit.transactionalorder.product.ProductDto;
-import pl.akademiaspecjalistowit.transactionalorder.product.ProductRepository;
-import pl.akademiaspecjalistowit.transactionalorder.product.ProductService;
+import pl.akademiaspecjalistowit.transactionalorder.order.dto.OrderDto;
+import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderServiceException;
+import pl.akademiaspecjalistowit.transactionalorder.order.repository.OrderRepository;
+import pl.akademiaspecjalistowit.transactionalorder.order.service.OrderService;
+import pl.akademiaspecjalistowit.transactionalorder.product.dto.ProductDto;
+import pl.akademiaspecjalistowit.transactionalorder.product.repository.ProductRepository;
+import pl.akademiaspecjalistowit.transactionalorder.product.service.ProductService;
 
 @SpringBootTest
 class OrderServiceImplTest {

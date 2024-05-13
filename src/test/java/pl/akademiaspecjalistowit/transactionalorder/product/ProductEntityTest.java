@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import pl.akademiaspecjalistowit.transactionalorder.order.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
+import pl.akademiaspecjalistowit.transactionalorder.product.exception.ProductException;
 
 class ProductEntityTest {
 
