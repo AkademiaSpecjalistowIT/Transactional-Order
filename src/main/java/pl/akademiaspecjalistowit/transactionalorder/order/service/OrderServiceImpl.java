@@ -1,5 +1,7 @@
 package pl.akademiaspecjalistowit.transactionalorder.order.service;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,21 +20,21 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductReadService productReadService;
-    private final OrderPlacedEventListener orderPlacedEventListener;
 
     @Override
     @Transactional
     public void placeAnOrder(OrderDto orderDto) {
-        OrderEntity orderEntity = productReadService.getProductByName(orderDto.getProductName())
-            .map(productEntity -> makeAnOrderWithWarehouseStateUpdate(orderDto, productEntity))
-            .orElseThrow(() -> new OrderServiceException("Zamównie nie moze być realizowane, ponieważ " +
-                "zawiera pozycje niedostępną w magazynie"));
+        List<ProductEntity> productEntities = orderDto.getProducts().stream().map(productReadService::getProductByName)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
+
+        OrderEntity orderEntity = makeAnOrderWithWarehouseStateUpdate(orderDto, productEntities);
 
         orderRepository.save(orderEntity);
-//        orderPlacedEventListener.notifyOrderPlaced(orderEntity);
     }
 
-    private OrderEntity makeAnOrderWithWarehouseStateUpdate(OrderDto orderDto, ProductEntity productEntity) {
+    private OrderEntity makeAnOrderWithWarehouseStateUpdate(OrderDto orderDto, List<ProductEntity> productEntity) {
         try {
             return new OrderEntity(
                 productEntity,

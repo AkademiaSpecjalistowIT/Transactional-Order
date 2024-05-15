@@ -1,12 +1,12 @@
 package pl.akademiaspecjalistowit.transactionalorder.order.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,17 +22,17 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductEntity productEntity;
+    @OneToMany
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private List<ProductEntity> productEntityList;
 
     private Integer quantity;
 
-    public OrderEntity(ProductEntity productEntity, Integer quantity) {
+    public OrderEntity(List<ProductEntity> productEntityList, Integer quantity) {
         validate(quantity);
-        this.productEntity = productEntity;
+        this.productEntityList = productEntityList;
         this.quantity = quantity;
-        productEntity.applyOrder(this);
+        productEntityList.forEach(e -> e.applyOrder(this));
     }
 
     private void validate(Integer quantity) {
