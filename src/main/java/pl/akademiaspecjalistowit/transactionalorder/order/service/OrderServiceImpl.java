@@ -9,7 +9,6 @@ import pl.akademiaspecjalistowit.transactionalorder.order.dto.OrderDto;
 import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
 import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderServiceException;
 import pl.akademiaspecjalistowit.transactionalorder.order.repository.OrderRepository;
-import pl.akademiaspecjalistowit.transactionalorder.order.service.events.OrderPlacedEventListener;
 import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
 import pl.akademiaspecjalistowit.transactionalorder.product.exception.ProductException;
 import pl.akademiaspecjalistowit.transactionalorder.product.service.ProductReadService;
@@ -24,14 +23,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void placeAnOrder(OrderDto orderDto) {
-        List<ProductEntity> productEntities = orderDto.getProducts().stream().map(productReadService::getProductByName)
+        List<ProductEntity> productEntities = orderDto.getProducts()
+            .stream().map(productReadService::getProductByName)
             .filter(Optional::isPresent)
             .map(Optional::get)
             .toList();
 
+        rejectPartialOrders(orderDto, productEntities);
+
         OrderEntity orderEntity = makeAnOrderWithWarehouseStateUpdate(orderDto, productEntities);
 
         orderRepository.save(orderEntity);
+    }
+
+    private void rejectPartialOrders(OrderDto orderDto, List<ProductEntity> productEntities) {
+        if (orderDto.getProducts().size() > productEntities.size()) {
+            throw new OrderServiceException("Order is rejected, due to missing of some items in the warehouse");
+        }
     }
 
     private OrderEntity makeAnOrderWithWarehouseStateUpdate(OrderDto orderDto, List<ProductEntity> productEntity) {
