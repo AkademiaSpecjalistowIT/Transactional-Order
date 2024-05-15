@@ -111,7 +111,7 @@ class OrderServiceImplTest {
     }
 
     private void theOrderMatchesInputValues(OrderDto orderDto, OrderEntity orderEntity) {
-        assertThat(orderDto.getProductName()).isEqualTo(orderEntity.getProductName());
+        assertThat(orderDto.getProductName()).isEqualTo(orderEntity.getProductEntity().getName());
         assertThat(orderDto.getQuantity()).isEqualTo(orderEntity.getQuantity());
     }
 

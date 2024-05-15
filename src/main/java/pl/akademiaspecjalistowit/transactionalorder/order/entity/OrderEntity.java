@@ -1,13 +1,17 @@
 package pl.akademiaspecjalistowit.transactionalorder.order.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderException;
+import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,14 +22,17 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String productName;
+    @OneToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private ProductEntity productEntity;
 
     private Integer quantity;
 
-    public OrderEntity(String productName, Integer quantity) {
+    public OrderEntity(ProductEntity productEntity, Integer quantity) {
         validate(quantity);
-        this.productName = productName;
+        this.productEntity = productEntity;
         this.quantity = quantity;
+        productEntity.applyOrder(this);
     }
 
     private void validate(Integer quantity) {
