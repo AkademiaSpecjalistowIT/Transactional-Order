@@ -5,8 +5,6 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
-import pl.akademiaspecjalistowit.transactionalorder.order.service.events.OrderPlacedEventListener;
 import pl.akademiaspecjalistowit.transactionalorder.product.dto.ProductDto;
 import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
 import pl.akademiaspecjalistowit.transactionalorder.product.repository.ProductRepository;
@@ -14,7 +12,7 @@ import pl.akademiaspecjalistowit.transactionalorder.product.repository.ProductRe
 @AllArgsConstructor
 @Service
 @Slf4j
-public class ProductServiceImpl implements ProductService, ProductReadService, OrderPlacedEventListener {
+public class ProductServiceImpl implements ProductService, ProductReadService {
 
     private final ProductRepository productRepository;
 
@@ -35,14 +33,5 @@ public class ProductServiceImpl implements ProductService, ProductReadService, O
     @Override
     public Optional<ProductEntity> getProductByName(String productName) {
         return productRepository.getProductEntityByName(productName);
-    }
-
-    private void removeBoughtOutProductsByName(String productName){
-        productRepository.removeBoughtOutProducts(productName);
-    }
-
-    @Override
-    public void notifyOrderPlaced(OrderEntity orderEntityAfterValidations) {
-//        removeBoughtOutProductsByName(orderEntityAfterValidations.getProductEntity().getName());
     }
 }
