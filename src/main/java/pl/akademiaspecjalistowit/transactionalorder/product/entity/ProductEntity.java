@@ -31,7 +31,7 @@ public class ProductEntity {
         this.quantity = quantity;
     }
 
-    public void applyOrder(OrderEntity orderEntity){
+    public void applyReservation(OrderEntity orderEntity){
         checkAvailabilityForOrder(orderEntity);
         this.quantity -= orderEntity.getQuantity();
     }
@@ -58,5 +58,9 @@ public class ProductEntity {
         if (this.quantity.compareTo(orderEntity.getQuantity()) < 0) {
             throw new ProductException("Ilość produktów nie jest wystarczająca");
         }
+    }
+
+    public void releaseReservation(Integer quantity) {
+        this.quantity += quantity;
     }
 }

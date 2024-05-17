@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,8 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private UUID technicalOrderId;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "orders_products",
         joinColumns = @JoinColumn(name = "order_id"),
@@ -37,8 +40,9 @@ public class OrderEntity {
         validate(quantity);
         this.productEntityList = productEntityList;
         this.quantity = quantity;
+        this.technicalOrderId = UUID.randomUUID();
         try {
-            productEntityList.forEach(e -> e.applyOrder(this));
+            productEntityList.forEach(e -> e.applyReservation(this));
         } catch (ProductException e) {
             throw new OrderException("Nie można utworzyć zamówienia, " +
                 "ponieważ wymagana ilość przekracza dostępność produktu");
@@ -49,5 +53,9 @@ public class OrderEntity {
         if (quantity <= 0) {
             throw new OrderException("Zamówienie pownno zawierać nie ujemną ilość pozycji");
         }
+    }
+
+    public void returnProducts() {
+        productEntityList.forEach(e -> e.releaseReservation(quantity));
     }
 }

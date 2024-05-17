@@ -123,6 +123,25 @@ class OrderServiceImplTest {
         assertThat(orderServiceException.getMessage()).contains("ilosć pozycji w magazynie jest niewystarczająca");
     }
 
+    @Test
+    void canceling_an_order_will_remove_it_from_db_and_return_reserved_products(){
+        productForTestOrderIsAvailable("pizza");
+        OrderDto validOrderDto = prepareValidOrderDto("pizza");
+        orderService.placeAnOrder(validOrderDto);
+        OrderEntity orderEntity = orderRepository.findAll().get(0);
+        orderRepository.flush(); //HINT czasami potrzebny
+
+        //when
+        orderService.cancelOrder(orderEntity.getTechnicalOrderId());
+
+        //then
+        List<OrderEntity> all = orderRepository.findAll();
+        assertThat(all).hasSize(0);
+
+        ProductEntity productEntity = productRepository.findAll().get(0);
+        assertThat(productEntity.getQuantity()).isEqualTo(validOrderDto.getQuantity());
+    }
+
 
     @Test
     public void order_will_not_be_placed_if_input_values_are_incorrect() {

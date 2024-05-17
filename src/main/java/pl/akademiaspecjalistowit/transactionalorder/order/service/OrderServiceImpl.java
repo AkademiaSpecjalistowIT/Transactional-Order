@@ -2,6 +2,7 @@ package pl.akademiaspecjalistowit.transactionalorder.order.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,6 @@ import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderExcepti
 import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderServiceException;
 import pl.akademiaspecjalistowit.transactionalorder.order.repository.OrderRepository;
 import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
-import pl.akademiaspecjalistowit.transactionalorder.product.exception.ProductException;
 import pl.akademiaspecjalistowit.transactionalorder.product.service.ProductReadService;
 
 @Service
@@ -35,6 +35,16 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = makeAnOrderWithWarehouseStateUpdate(orderDto, productEntities);
 
         orderRepository.save(orderEntity);
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrder(UUID orderId) {
+        orderRepository.findByTechnicalOrderId(orderId)
+            .ifPresent(orderEntity -> {
+                orderEntity.returnProducts();
+                orderRepository.delete(orderEntity);
+            });
     }
 
     private void rejectPartialOrders(OrderDto orderDto, List<ProductEntity> productEntities) {

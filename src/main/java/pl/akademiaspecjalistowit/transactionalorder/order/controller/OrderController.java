@@ -1,7 +1,11 @@
 package pl.akademiaspecjalistowit.transactionalorder.order.controller;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,4 +26,10 @@ public class OrderController {
     public void placeAnOrder(@RequestBody OrderDto orderDto) {
         orderService.placeAnOrder(orderDto);
     }
+
+    @DeleteMapping("/{orderId}")
+    public void cancelOrder(@PathVariable UUID orderId){
+        orderService.cancelOrder(orderId);
+    }
+
 }
