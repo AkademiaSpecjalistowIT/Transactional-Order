@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.akademiaspecjalistowit.transactionalorder.order.dto.OrderDto;
 import pl.akademiaspecjalistowit.transactionalorder.order.entity.OrderEntity;
+import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderException;
 import pl.akademiaspecjalistowit.transactionalorder.order.exception.OrderServiceException;
 import pl.akademiaspecjalistowit.transactionalorder.order.repository.OrderRepository;
 import pl.akademiaspecjalistowit.transactionalorder.product.entity.ProductEntity;
@@ -47,9 +48,9 @@ public class OrderServiceImpl implements OrderService {
             return new OrderEntity(
                 productEntity,
                 orderDto.getQuantity());
-        } catch (ProductException e) {
+        } catch (OrderException e) {
             throw new OrderServiceException(
-                "Zamównie nie może być zrealizowane ponieważ ilosć " +
+                "Zamównie nie może być złożone ponieważ ilosć " +
                     "pozycji w magazynie jest niewystarczająca");
         }
     }
